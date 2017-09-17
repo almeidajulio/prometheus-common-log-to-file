@@ -66,6 +66,8 @@ func AddFlags(a *kingpin.Application) {
 	a.Action(s.apply)
 }
 
+type Fields = logrus.Fields
+
 // Logger is the interface for loggers used in the Prometheus components.
 type Logger interface {
 	Debug(...interface{})
@@ -87,6 +89,8 @@ type Logger interface {
 	Fatal(...interface{})
 	Fatalln(...interface{})
 	Fatalf(string, ...interface{})
+
+	WithFields(Fields) *logrus.Entry
 
 	With(key string, value interface{}) Logger
 
@@ -360,4 +364,14 @@ func (errorLogWriter) Write(b []byte) (int, error) {
 // in the ErrorLog field of an http.Server to log HTTP server errors.
 func NewErrorLogger() *log.Logger {
 	return log.New(&errorLogWriter{}, "", 0)
+}
+
+// WithFields takes into consideration the fields
+func (l logger) WithFields(fields Fields) *logrus.Entry {
+	return l.sourced().WithFields(fields)
+}
+
+// WithFields logs a message with fields
+func WithFields(fields Fields) {
+	baseLogger.sourced().WithFields(fields)
 }

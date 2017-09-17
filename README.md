@@ -1,4 +1,9 @@
 ### Add logging to file functionality in github.com/prometheus/common/log
+
+### Features added in short
+1. Log to a file/or basically to any io.Writer
+2. Added WithFields functionality
+
 This is an improvement for github.com/prometheus/common/log package where it lets you write logs to a file.
 
 I liked prometheus's wrapper for logging and brought it to my code. I downloaded commit 61f87aac8082fa8c3c5655c7608d7478d46ac2ad. This commit's NewLogger function looks like
